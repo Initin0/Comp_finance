@@ -3,7 +3,7 @@
 ## Overview
 This project implements a comprehensive algorithmic trading framework that combines multiple technical indicators to generate buy and sell signals for financial market assets. The system uses Exponential Moving Averages (EMA), Relative Strength Index (RSI), and Average Directional Index (ADX) to identify potential trading opportunities based on trend strength and momentum.
 
-![Trading Strategy Visualization](https://github.com/Initin0/Comp_finance/data.png)
+![Trading Strategy Visualization](https://github.com/Initin0/Comp_finance/blob/main/data.png)
 
 ## Features
 - **Modular Object-Oriented Design**: Easily extensible and maintainable codebase
