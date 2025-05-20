@@ -1,154 +1,97 @@
-# Technical Trading Strategy System
-
-A Python-based trading strategy backtesting system that combines technical indicators (EMA crossovers, ADX, and RSI) to generate buy/sell signals and evaluate strategy performance.
+# Technical Trading Strategy Framework
 
 ## Overview
+This project implements a comprehensive algorithmic trading framework that combines multiple technical indicators to generate buy and sell signals for financial market assets. The system uses Exponential Moving Averages (EMA), Relative Strength Index (RSI), and Average Directional Index (ADX) to identify potential trading opportunities based on trend strength and momentum.
 
-This project implements a comprehensive trading strategy system that:
-- Fetches historical stock data using Yahoo Finance
-- Calculates key technical indicators
-- Generates trading signals based on multiple indicator conditions
-- Backtests the strategy against historical data
-- Provides performance metrics and visualizations
+![Trading Strategy Visualization](https://github.com/Initin0/Comp_finance/data.png)
 
 ## Features
+- **Modular Object-Oriented Design**: Easily extensible and maintainable codebase
+- **Multi-Factor Signal Generation**: Combines trend and momentum indicators
+- **Comprehensive Backtesting System**: Complete metrics and performance analysis 
+- **Visualization Tools**: Detailed charts for prices, indicators, and performance
+- **Risk Management**: Tracking of drawdowns, win rates, and other risk metrics
 
-- **Data Retrieval**: Fetches stock data using yfinance API
-- **Technical Indicators**:
-  - Exponential Moving Averages (EMA)
-  - Average Directional Index (ADX)
-  - Relative Strength Index (RSI)
-- **Signal Generation**: Combines EMA crossovers, ADX strength, and RSI overbought/oversold conditions
-- **Backtesting**: Simulates trades and calculates performance metrics
-- **Visualization**: Creates detailed charts for price action, indicators, and performance
-- **Performance Analysis**: Calculates key metrics including:
-  - Total return
-  - Annual return
-  - Sharpe ratio
-  - Maximum drawdown
-  - Number of trades
+## Technical Indicators
+The strategy incorporates three primary technical indicators:
+1. **EMA Crossover**: Fast EMA (10-period) and Slow EMA (30-period) crossover for trend direction
+2. **RSI (Relative Strength Index)**: 14-period RSI for identifying overbought/oversold conditions (buy threshold: 40, sell threshold: 60)
+3. **ADX (Average Directional Index)**: 14-period ADX for measuring trend strength (threshold: 20)
+
+## Performance Metrics (Last Backtest)
+- **Total Return**: 0.20% (vs. Market Return: 1.62%)
+- **Annualized Return**: 0.41% (vs. Market Annualized: 3.31%)
+- **Sharpe Ratio**: 0.01
+- **Maximum Drawdown**: 30.88%
+- **Win Rate**: 50.00%
+- **Profit Factor**: 1.40
+- **Best Trade**: 15.23% gain (Nov 27, 2024 - Jan 29, 2025)
+- **Worst Trade**: 10.86% loss (Feb 21, 2025 - May 9, 2025)
+
+## Requirements
+- Python 3.7+
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- yfinance
 
 ## Installation
-
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/trading-strategy.git
 cd trading-strategy
 
-# Install required packages
+# Create and activate virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-## Requirements
-
-```
-pandas
-numpy
-matplotlib
-yfinance
-seaborn
-```
-
 ## Usage
-
-### Basic Example
-
+Basic usage example:
 ```python
 from trading_strategy import TradingStrategy
 
-# Create strategy instance
-strategy = TradingStrategy(ticker="AAPL", period="1y", interval="1d")
+# Create a new strategy instance
+strategy = TradingStrategy(ticker="MSFT", period="1y", interval="1d")
 
 # Fetch data and calculate indicators
 strategy.fetch_data()
-strategy.calculate_indicators()
+strategy.calculate_indicators(fast_ema=12, slow_ema=26, adx_period=14, rsi_period=14)
 
-# Generate signals and backtest
-strategy.generate_signals()
+# Generate trading signals
+strategy.generate_signals(adx_threshold=25, rsi_buy=30, rsi_sell=70)
+
+# Run backtest
 strategy.backtest_strategy(initial_capital=10000)
 
-# Display results
+# Print performance summary
 strategy.summary()
-strategy.plot_results()
+
+# Plot results
+fig = strategy.plot_results()
 plt.show()
 ```
 
-### Customizing Parameters
-
-```python
-# Create strategy with custom parameters
-strategy = TradingStrategy(ticker="MSFT", period="2y", interval="1d")
-
-# Calculate custom indicators
-strategy.calculate_indicators(
-    fast_ema=8,       # Fast EMA period
-    slow_ema=21,      # Slow EMA period
-    adx_period=14,    # ADX period
-    rsi_period=14     # RSI period
-)
-
-# Generate signals with custom thresholds
-strategy.generate_signals(
-    adx_threshold=20,  # Minimum ADX value for trend strength
-    rsi_buy=35,        # RSI threshold for buy signals
-    rsi_sell=65        # RSI threshold for sell signals
-)
-
-# Backtest with custom capital
-strategy.backtest_strategy(initial_capital=50000)
-```
-
-## Strategy Logic
-
-The trading strategy uses the following logic:
-
-1. **Buy Signal** is generated when:
-   - Fast EMA crosses above the Slow EMA
-   - ADX is above the threshold (default: 25), indicating a strong trend
-   - RSI is below the oversold threshold (default: 30)
-
-2. **Sell Signal** is generated when:
-   - Fast EMA crosses below the Slow EMA
-   - ADX is above the threshold, indicating a strong trend
-   - RSI is above the overbought threshold (default: 70)
-
-## Performance Metrics
-
-The backtest calculates the following performance metrics:
-
-- **Total Return**: Overall percentage gain/loss
-- **Market Return**: Buy-and-hold return for comparison
-- **Annual Return**: Annualized return percentage
-- **Sharpe Ratio**: Risk-adjusted return measure (assuming zero risk-free rate)
-- **Max Drawdown**: Maximum percentage decline from peak to trough
-- **Number of Trades**: Total buy/sell signals generated
-
-## Visualization
-
-The `plot_results()` method creates three main charts:
-1. Price chart with EMA lines and buy/sell signals
-2. Technical indicators (ADX and RSI) with threshold lines
-3. Cumulative returns comparing strategy performance to buy-and-hold
-
-## Limitations
-
-- The strategy assumes transactions occur at the close price
-- No transaction costs or slippage are considered
-- No position sizing or risk management beyond basic entry/exit
-- Limited to single-instrument trading
+## Customization
+The framework allows for easy customization of:
+- Ticker symbols
+- Time periods and data intervals
+- Indicator parameters (EMA lengths, RSI thresholds, ADX periods)
+- Initial capital for backtesting
 
 ## Future Improvements
-
-- Add support for transaction costs and slippage
-- Implement position sizing and risk management
-- Add parameter optimization functionality
-- Support for multi-asset portfolio strategies
-- Include additional technical indicators and signal types
+- Add machine learning models for signal enhancement
+- Implement portfolio optimization and position sizing
+- Develop real-time trading capabilities
+- Add more sophisticated risk management tools
+- Incorporate fundamental data analysis
 
 ## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-MIT
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+## Disclaimer
+This software is for educational purposes only. It is not intended to be investment advice. Past performance is not indicative of future results. Use at your own risk.
